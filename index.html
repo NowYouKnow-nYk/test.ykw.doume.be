@@ -239,9 +239,7 @@
   </script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('Service worker trouvé'))
-        .catch((err) => console.error('Service worker non trouvé :', err));
+      navigator.serviceWorker.register('/sw.js');
     }
 
     setInterval(() => {
