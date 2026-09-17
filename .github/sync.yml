@@ -15,3 +15,5 @@ NowYouKnow-nYk/ykw.doume.be:
     dest: etape4.png
   - source: etape5.png
     dest: etape5.png
+  - source: sw.js
+    dest: sw.js
