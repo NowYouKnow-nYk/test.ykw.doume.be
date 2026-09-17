@@ -1,6 +1,4 @@
 NowYouKnow-nYk/ykw.doume.be:
-  - source: ''
-    dest: ''
-    exclude: |
+  - exclude: |
       README.md
       CNAME
