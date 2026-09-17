@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="300">
+  <meta http-equiv="refresh" content="10"> <!-- Refresh l'écran toutes les 10 secondes pour plus de tests, ça ne changera pas de problème dans le prod, tkt -->
   <title>Emprunter une batterie externe en 5 étapes</title>
   <style>
     /* Reset & Base */
@@ -219,5 +219,23 @@
     </div>
   </div>
 
+  <script>
+    function updateTimeBasedBrightness() {
+      const hour = new Date().getHours();
+      let brightness = 1;
+
+      if (hour >= 18 || hour < 9) {
+          brightness = 0.5;
+      } 
+      else if (hour >= 17) {
+          brightness = 0.8;
+      }
+
+      document.body.style.filter = `brightness(${brightness})`;
+    }
+
+    updateTimeBasedBrightness();
+    etInterval(updateTimeBasedBrightness, 60000);
+  </script>
 </body>
 </html>
