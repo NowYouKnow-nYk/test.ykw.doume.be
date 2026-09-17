@@ -225,7 +225,7 @@
       let brightness = 1;
 
       if (hour >= 18 || hour < 8) {
-          brightness = 0.5;
+          brightness = 0.1;
       } 
       else if (hour >= 17) {
           brightness = 0.8;
@@ -236,6 +236,19 @@
 
     updateTimeBasedBrightness();
     setInterval(updateTimeBasedBrightness, 60000);
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service worker trouvé'))
+        .catch((err) => console.error('Service worker non trouvé :', err));
+    }
+
+    setInterval(() => {
+      if (navigator.onLine) {
+        window.location.reload();
+      }
+    }, 10000);
   </script>
 </body>
 </html>
