@@ -1,5 +1,17 @@
 NowYouKnow-nYk/ykw.doume.be:
-  - source: README.md
-    dest: readme_test.md
-  - source: CNAME
-    dest: cname_test
+
+  # Le html
+  - source: index.html
+    dest: index.html
+
+  # Les .png
+  - source: etape1.png
+    dest: etape1.png
+  - source: etape2.png
+    dest: etape2.png
+  - source: etape3.png
+    dest: etape3.png
+  - source: etape4.png
+    dest: etape4.png
+  - source: etape5.png
+    dest: etape5.png
