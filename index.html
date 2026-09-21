@@ -228,15 +228,12 @@
       else if (hour >= 7 || hour <= 8) {
         brightness = 0.4;
       }
-      else {
-        brightness = 0.8;
-      }
 
       document.body.style.filter = `brightness(${brightness})`;
     }
 
     updateTimeBasedBrightness();
-    setInterval(updateTimeBasedBrightness, 5000);
+    setInterval(updateTimeBasedBrightness, 10000);
   </script>
   <script>
     if ('serviceWorker' in navigator) {
@@ -247,7 +244,7 @@
       if (navigator.onLine) {
         window.location.reload();
       }
-    }, 10000);
+    }, 120000);
   </script>
 </body>
 </html>
