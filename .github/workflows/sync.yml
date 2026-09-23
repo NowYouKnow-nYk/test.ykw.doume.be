@@ -15,4 +15,4 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           SKIP_PR: true
           COMMIT_PREFIX: "sync: "
-          COMMIT_BODY: ''jour
+          COMMIT_BODY: "'jour"
