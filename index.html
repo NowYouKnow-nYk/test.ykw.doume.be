@@ -250,16 +250,21 @@
     <script>
       function updateTimeBasedBrightness() {
         const hour = new Date().getHours();
+        const hasFully = typeof fully !== 'undefined';
         let brightness = 1;
 
         if (hour >= 18 || hour < 7) {
+          if (hasFully) fully.turnScreenOff();
           brightness = 0.1;
         } else if (hour == 7) {
+          if (hasFully) fully.turnScreenOn();
           brightness = 0.4;
+        } else {
+          if (hasFully) fully.turnScreenOn();
         }
 
-        if (typeof fully !== undefined) {
-          fully.setScreenBrightness(255 * brightness);
+        if (hasFully) {
+          fully.setScreenBrightness(Math.round(255 * brightness));
         } else {
           document.body.style.filter = `brightness(${brightness})`;
         }
