@@ -256,7 +256,7 @@
         if (hour >= 18 || hour < 7) {
           if (hasFully) fully.turnScreenOff();
           brightness = 0.1;
-        } else if (hour == 7) {
+        } else if (hour === 7) {
           if (hasFully) fully.turnScreenOn();
           brightness = 0.4;
         } else {
@@ -265,6 +265,7 @@
 
         if (hasFully) {
           fully.setScreenBrightness(Math.round(255 * brightness));
+          document.body.style.filter = 'brightness(1)'
         } else {
           document.body.style.filter = `brightness(${brightness})`;
         }
