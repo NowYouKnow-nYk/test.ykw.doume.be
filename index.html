@@ -258,7 +258,11 @@
           brightness = 0.4;
         }
 
-        document.body.style.filter = `brightness(${brightness})`;
+        if (typeof fully !== undefined) {
+          fully.setScreenBrightness(255 * brightness);
+        } else {
+          document.body.style.filter = `brightness(${brightness})`;
+        }
       }
 
       updateTimeBasedBrightness();
