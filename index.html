@@ -280,14 +280,13 @@
     </script>
 
     <script>
-      function PingAPI() {
+      async function PingAPI() {
         // Permet de savoir si le kiosk est connecté à internet, et aussi à garder mon service en ligne (une pierre deux coups)
-        let fetchApi = fetch("https://api.doume.be/ping");
-
-        if (fetchApi.ok) {
-          let isOnline = true;
-        } else {
-          let isOnline = false;
+        try {
+          const response = await fetch("https://api.doume.be/ping", { cache: "no-store" });
+          window.isOnline = response.ok;
+        } catch (error) {
+          window.isOnline = false;
         }
       }
 
