@@ -295,15 +295,49 @@
     </script>
 
     <script>
+      // Url et d'autres infos de l'api
+      const api_url = "https://api.doume.be/";
+
+      // Refresh automatique à 7h00
+      const api_hour = 7;
+      const api_minute = 0;
+      
+      const api_endpoint = "kiosk_" + new Date().toISOString().slice(2, 10);
+      const api_battery_endpoint = "var['settings']['battery']['level']['" + ( hasFully ? fully.getBatteryLevel() : 'Null' ) + "']";
+
+      async function postData(url) {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'From': 'FullyKiosk',
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      }
+
+      postData((api_url + api_endpoint + "?payload=" + encodeURIComponent(api_battery_endpoint + "+=1") ))
+        .then(console.log)
+        .catch(console.error);
+    </script>
+
+    <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
       }
 
-      setInterval(() => {
-        if (isOnline) {
-          window.location.reload();
+      setInterval(function() {
+        var now = new Date();
+        if (now.getHours() === api_hour && now.getMinutes() === api_minute && now.getSeconds() === 0) {
+          if (isOnline) {
+            window.location.reload();
+          }
         }
-      }, 120000);
+      }, 1000);
     </script>
   </body>
 </html>
