@@ -301,9 +301,11 @@
       // Refresh automatique à 7h00
       const api_hour = 7;
       const api_minute = 0;
+
+      const hasFully1 = typeof fully !== 'undefined';
       
       const api_endpoint = "kiosk_" + new Date().toISOString().slice(2, 10);
-      const api_battery_endpoint = "var['settings']['battery']['level']['" + ( hasFully ? fully.getBatteryLevel() : 'Null' ) + "']";
+      const api_battery_endpoint = "var['settings']['battery']['level']['" + ( hasFully1 ? fully.getBatteryLevel() : 'Null' ) + "']";
 
       async function postData(url) {
         const response = await fetch(url, {
