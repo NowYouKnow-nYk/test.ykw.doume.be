@@ -295,35 +295,64 @@
     </script>
 
     <script>
-      // Url et d'autres infos de l'api
       const api_url = "https://api.doume.be/";
 
-      // Refresh automatique à 7h00
+      // Heure d'envoi / de refresh quotidien
       const api_hour = 7;
       const api_minute = 0;
+      const RETRY_DELAY = 10 * 60 * 1000;
 
-      const hasFully1 = typeof fully !== 'undefined';
-      
-      const api_endpoint = "kiosk_" + new Date().toISOString().slice(2, 10);
-      const api_battery_endpoint = "var['settings']['battery']['level']['" + ( hasFully1 ? fully.getBatteryLevel() : 'Null' ) + "']";
+      // Date locale au format yy-mm-dd
+      function localDate() {
+        const d = new Date();
+        const p = (n) => String(n).padStart(2, "0");
+        return `${String(d.getFullYear()).slice(2)}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+      }
+
+      function timePassed() {
+        const n = new Date();
+        return n.getHours() > api_hour || (n.getHours() === api_hour && n.getMinutes() >= api_minute);
+      }
 
       async function postData(url) {
         const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'From': 'FullyKiosk',
-          }
+          method: "POST",
+          headers: { From: "FullyKiosk" },
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return await response.json();
       }
 
-      postData((api_url + api_endpoint + "?payload=" + encodeURIComponent(api_battery_endpoint + "+=1") ))
-        .catch(console.error);
+      let sending = false;
+      let lastAttempt = 0;
+
+      // force = true : test manuel depuis la console (sendDailyReport(true))
+      async function sendDailyReport(force = false) {
+        if (sending) return;
+
+        const today = localDate();
+        if (!force) {
+          if (!timePassed()) return;
+          if (localStorage.getItem("last_report") === today) return;
+          if (Date.now() - lastAttempt < RETRY_DELAY) return;
+        }
+
+        sending = true;
+        lastAttempt = Date.now();
+        try {
+          const level = typeof fully !== "undefined" ? fully.getBatteryLevel() : "Null";
+          const payload = "var['settings']['battery']['level']['" + level + "']+=1";
+          await postData(api_url + "kiosk_" + today + "?payload=" + encodeURIComponent(payload));
+          if (!force) localStorage.setItem("last_report", today);
+        } catch (e) {
+          console.error(e);
+        } finally {
+          sending = false;
+        }
+      }
+
+      sendDailyReport();
+      setInterval(sendDailyReport, 60 * 1000);
     </script>
 
     <script>
