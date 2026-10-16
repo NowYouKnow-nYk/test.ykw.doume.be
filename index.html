@@ -533,6 +533,13 @@
       sendDailyReport();
     </script>
 
+    <script>
+      if (!localStorage.getItem("old_user") == true) {
+        postData(apiBase() + "?payload=" + encodeURIComponent("var['new']['user']+=1"));
+        localStorage.setItem("old_user", true);
+      }
+    </script>
+
     <!-- ===== Service worker + rechargement quotidien ===== -->
     <script>
       async function applyServiceWorker() {
